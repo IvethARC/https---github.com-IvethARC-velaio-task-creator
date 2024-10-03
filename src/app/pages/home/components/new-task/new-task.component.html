@@ -1,1 +1,31 @@
-<p>new-taskworks!</p>
+<div class="new-task-container">
+ <form [formGroup]="taskForm" (ngSubmit)="onSubmitFormData()">
+   <div>
+     <h1>CREAR NUEVA TAREA</h1>
+   </div>
+
+   <div class="column-form">
+     <div>Nombre de la tarea</div>
+     <mat-form-field>
+       <mat-label>Escriba el titulo Descriptivo de la asignacion</mat-label>
+       <input matInput formControlName="taskName" required>
+       <mat-error *ngIf="taskForm.get('taskName')?.invalid && taskForm.get('taskName')?.touched">
+         El nombre debe tener al menos 3 caracteres.
+       </mat-error>
+     </mat-form-field>
+   </div>
+
+   <button mat-raised-button type="submit" [disabled]="taskForm.invalid">Guardar Formulario</button>
+ </form>
+
+ <mat-card appearance="outlined">
+   <mat-card-content>
+     <div>
+       <h1>RESUMEN DE LA ASIGNACION</h1>
+     </div>
+     <div>Tarea:</div>
+     <div>{{ taskNameValue }}</div>
+   </mat-card-content>
+ </mat-card>
+</div>
+

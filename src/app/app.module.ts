@@ -14,12 +14,15 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { NewTaskComponent } from './pages/home/components/new-task/new-task.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent
+    HomeComponent,
+    NewTaskComponent
   ],
   imports: [
     BrowserModule,
@@ -33,7 +36,8 @@ import {MatCardModule} from '@angular/material/card';
     MatNativeDateModule,
     MatButtonModule,
     MatIconModule,
-    MatCardModule
+    MatCardModule,
+    FormBuilder, FormGroup, Validators
   ],
   providers: [
     {
