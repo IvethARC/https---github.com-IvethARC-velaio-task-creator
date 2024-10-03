@@ -6,7 +6,6 @@ import { NewTaskComponent } from './components/new-task/new-task.component';
 import { HomeRoutingModule } from './home-routing.module';
 
 // Angular Material Modules
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -18,6 +17,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ListTaskComponent } from './components/list-task/list-task.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -39,6 +39,7 @@ import { ListTaskComponent } from './components/list-task/list-task.component';
     MatIconModule,
     MatCardModule,
     ReactiveFormsModule,
+    FormsModule
   ],
   providers: [
     {

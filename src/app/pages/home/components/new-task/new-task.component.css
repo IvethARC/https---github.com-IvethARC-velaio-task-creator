@@ -1,4 +1,54 @@
-.column-form {
+.new-task-container {
+ width: 100%;
+ height: auto;
  display: flex;
  flex-direction: column;
+ justify-content: flex-start;
+ align-items: flex-start;
+ padding: 40px;
+ color: #ffffff;
+}
+.form-container {
+ width: 100%;
+ margin: 16px 0;
+}
+.row-form {
+ display: flex;
+ flex-direction: column;
+ margin-bottom: 16px;
+}
+.form-field {
+ margin-bottom: 8px;
+}
+mat-form-field {
+ width: 100%;
+}
+.btn-container {
+ display: flex;
+ justify-content: space-around;
+ align-items: center;
+}
+
+.my-button {
+ padding: 10px 20px;
+ background-color: #ffffff;
+ color: #221f3c;
+ border: none;
+ border-radius: 5px;
+ cursor: pointer;
+}
+
+.my-button:hover {
+ background-color: #43baff;
+ color: #ffffff;
+}
+
+.my-button:active {
+ background-color: #43baff;
+ color: #ffffff;
+}
+@media (max-width: 900px) {
+ .new-task-container {
+   padding: 20px;
+ }
 }

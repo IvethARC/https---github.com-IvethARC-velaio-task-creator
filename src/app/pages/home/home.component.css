@@ -6,6 +6,10 @@
   flex-direction: column;
   background-color: #221f3c;
 }
+.card-container {
+        height: auto;
+        width: 100%;
+}
 .card-home {
   background-image: url("https://velaio.com/wp-content/uploads/bg-cta-home2.jpg");
   background-position: center;
@@ -93,11 +97,8 @@
   top: 0;
 }
 .body-home {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 20px 0;
-  width: 100%;
+        width: 100%;
+        padding: 0 16px;
 }
 
 @media (max-width: 900px) {
@@ -105,7 +106,7 @@
     height: 220px;
   }
   .title-home {
-    margin-top: 20px;
+        margin: 50px 0 20px;
     font-family: Montserrat-Bold;
     font-size: 42px;
   }

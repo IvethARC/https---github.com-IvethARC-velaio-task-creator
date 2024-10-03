@@ -1,31 +1,81 @@
 <div class="new-task-container">
- <form [formGroup]="taskForm" (ngSubmit)="onSubmitFormData()">
-   <div>
-     <h1>CREAR NUEVA TAREA</h1>
-   </div>
+  <h1>CREAR NUEVA TAREA</h1>
+  <div class="form-container">
+      <form [formGroup]="taskForm" (ngSubmit)="onSubmitFormData()">     
+        <div class="row-form">
+          <div class="form-field">
+            <span>Nombre de la tarea:</span>
+          </div>
+          <mat-form-field>
+            <mat-label>Escriba el titulo Descriptivo de la asignacion</mat-label>
+            <input matInput formControlName="taskName" required>
+            <mat-error *ngIf="taskForm.get('taskName')?.invalid && taskForm.get('taskName')?.touched">
+              El nombre debe tener al menos 3 caracteres.
+            </mat-error>
+          </mat-form-field>         
+        </div>
 
-   <div class="column-form">
-     <div>Nombre de la tarea</div>
-     <mat-form-field>
-       <mat-label>Escriba el titulo Descriptivo de la asignacion</mat-label>
-       <input matInput formControlName="taskName" required>
-       <mat-error *ngIf="taskForm.get('taskName')?.invalid && taskForm.get('taskName')?.touched">
-         El nombre debe tener al menos 3 caracteres.
-       </mat-error>
-     </mat-form-field>
-   </div>
+        <div class="row-form">
+          <div class="form-field">
+            <span>Fecha límite:</span>
+          </div>
+          <mat-form-field>
+            <mat-label>Formato día/mes/año</mat-label>
+            <input matInput [matDatepicker]="picker">
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+        </div>
 
-   <button mat-raised-button type="submit" [disabled]="taskForm.invalid">Guardar Formulario</button>
- </form>
+        <div class="row-form">
+          <div class="form-field">
+            <span>Personas asociadas:</span>
+          </div>
+          
+          <div class="btn-container">
+            <div class="my-button" (click)="selectOldDeveloper()">
+              <span>
+                Desarrollador antiguo
+              </span>
+            </div>
+            <div class="my-button" (click)="selectNewDeveloper()">
+              <span>
+                Nuevo desarrollador
+              </span>
+            </div>
+          </div>
+        </div>
 
- <mat-card appearance="outlined">
-   <mat-card-content>
-     <div>
-       <h1>RESUMEN DE LA ASIGNACION</h1>
-     </div>
-     <div>Tarea:</div>
-     <div>{{ taskNameValue }}</div>
-   </mat-card-content>
- </mat-card>
+        <div *ngIf="isOldDeveloper; else newDeveloperTemplate">
+          <ng-container *ngTemplateOutlet="oldDeveloperTemplate"></ng-container>
+        </div>
+        
+        <ng-template #oldDeveloperTemplate>
+          <label for="personSelect">Selecciona un desarrollador</label>
+          <select id="personSelect" [(ngModel)]="selectedPerson">
+            <option *ngFor="let person of persons" [value]="person">
+              {{ person.name }} ({{ person.age }} años)
+            </option>
+          </select>
+          <div *ngIf="selectedPerson">
+            <p>Has seleccionado: {{ selectedPerson.name }}</p>
+          </div>
+        </ng-template>
+        
+        <!-- Plantilla para nuevo desarrollador -->
+        <ng-template #newDeveloperTemplate>
+          <label for="newName">Nombre:</label>
+          <input id="newName" [(ngModel)]="newDeveloper.name" placeholder="Escribe el nombre">
+          
+          <label for="newAge">Edad:</label>
+          <input id="newAge" type="number" [(ngModel)]="newDeveloper.age" placeholder="Escribe la edad">
+          
+          <div *ngIf="newDeveloper.name && newDeveloper.age">
+            <p>Nuevo desarrollador: {{ newDeveloper.name }} ({{ newDeveloper.age }} años)</p>
+          </div>
+        </ng-template>
+     
+        <button mat-raised-button type="submit" [disabled]="taskForm.invalid">Guardar Formulario</button>
+      </form>
+  </div>
 </div>
-
