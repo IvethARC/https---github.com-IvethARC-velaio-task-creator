@@ -13,4 +13,7 @@ export class HomeComponent {
   openFormNewTask() {
     this.router.navigate(['/new-task'])
   }
+  openListTask() {
+    this.router.navigate(['/list-task'])
+  }
 }
