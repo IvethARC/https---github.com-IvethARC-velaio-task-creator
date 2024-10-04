@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Person } from '../../../../core/models/person.model';
 import { TaskService } from 'src/app/core/services/task.service';
@@ -10,18 +10,22 @@ import { TaskService } from 'src/app/core/services/task.service';
 })
 export class NewTaskComponent implements OnInit {
   taskForm: FormGroup;
-  taskNameValue: string = '';
   isOldDeveloper = false;
-
   persons: Person[] = [];
   selectedPerson: Person | null = null;
+  isLoading: boolean = true;
   newDeveloper = { name: '', age: null };
-
-  constructor( private fb: FormBuilder,
-    private taskService: TaskService
-   ){
+  selectedDeveloperType: 'old' | 'new' | null = null;
+  
+  constructor(private fb: FormBuilder,
+              private taskService: TaskService,
+              private cdr: ChangeDetectorRef ){
     this.taskForm = this.fb.group({
-      taskName: ['', [Validators.required, Validators.minLength(3)]]
+      taskName: ['', [Validators.required, Validators.minLength(3)]],
+      dueDate: ['', Validators.required],
+      newDeveloperName: ['', [Validators.required, Validators.minLength(5)]],
+      newDeveloperAge: [null, [Validators.required, Validators.min(18)]],
+      selectedPerson: [null]
     });
   }
 
@@ -29,22 +33,38 @@ export class NewTaskComponent implements OnInit {
     this.loadPersons();
   }
 
-  loadPersons(): void {
-    this.taskService.getPersons().subscribe((data: Person[]) => {
-      this.persons = data;
+  loadPersons() {
+    this.isLoading = true;
+    this.taskService.getPersons().subscribe((persons) => {
+      this.persons = persons;
+      this.isLoading = false;
+      this.cdr.detectChanges();
     });
   }
 
   selectOldDeveloper(): void {
     this.isOldDeveloper = true;
+    this.selectedDeveloperType = 'old';
   }
+  
   selectNewDeveloper(): void {
     this.isOldDeveloper = false;
+    this.selectedDeveloperType = 'new';
   }
 
   onSubmitFormData() {
     if (this.taskForm.valid) {
-      this.taskNameValue = this.taskForm.get('taskName')?.value;
+      const formData = {
+        taskName: this.taskForm.get('taskName')?.value,
+        dueDate: this.taskForm.get('dueDate')?.value,
+        selectedPerson: this.taskForm.get('selectedPerson')?.value,
+        newDeveloper: this.isOldDeveloper ? null : {
+          name: this.taskForm.get('newDeveloperName')?.value,
+          age: this.taskForm.get('newDeveloperAge')?.value
+        }
+      };
+      console.log('Datos a enviar:', formData);
+      // Aquí puedes enviar `formData` al arreglo que utilizarás en otro componente
     }
   }
 }

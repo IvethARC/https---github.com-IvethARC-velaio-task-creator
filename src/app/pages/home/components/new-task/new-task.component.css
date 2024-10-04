@@ -42,10 +42,18 @@ mat-form-field {
  background-color: #43baff;
  color: #ffffff;
 }
-
-.my-button:active {
+.my-button.selected {
  background-color: #43baff;
  color: #ffffff;
+}
+.dataNewDevContainer {
+ display: flex;
+ justify-content: space-around;
+ align-items: center;
+}
+.nameNewDev {
+ width: 100%;
+ padding-right: 16px;
 }
 @media (max-width: 900px) {
  .new-task-container {

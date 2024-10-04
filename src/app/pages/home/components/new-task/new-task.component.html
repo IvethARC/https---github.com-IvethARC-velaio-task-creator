@@ -21,9 +21,12 @@
           </div>
           <mat-form-field>
             <mat-label>Formato día/mes/año</mat-label>
-            <input matInput [matDatepicker]="picker">
+            <input matInput [matDatepicker]="picker" formControlName="dueDate">
             <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
+            <mat-error *ngIf="taskForm.get('dueDate')?.invalid && taskForm.get('dueDate')?.touched">
+              Se requiere una fecha válida.
+            </mat-error>
           </mat-form-field>
         </div>
 
@@ -33,12 +36,12 @@
           </div>
           
           <div class="btn-container">
-            <div class="my-button" (click)="selectOldDeveloper()">
+            <div class="my-button" (click)="selectOldDeveloper()" [ngClass]="{'selected': selectedDeveloperType === 'old'}">
               <span>
                 Desarrollador antiguo
               </span>
             </div>
-            <div class="my-button" (click)="selectNewDeveloper()">
+            <div class="my-button" (click)="selectNewDeveloper()" [ngClass]="{'selected': selectedDeveloperType === 'new'}">
               <span>
                 Nuevo desarrollador
               </span>
@@ -51,31 +54,70 @@
         </div>
         
         <ng-template #oldDeveloperTemplate>
-          <label for="personSelect">Selecciona un desarrollador</label>
-          <select id="personSelect" [(ngModel)]="selectedPerson">
-            <option *ngFor="let person of persons" [value]="person">
-              {{ person.name }} ({{ person.age }} años)
-            </option>
-          </select>
-          <div *ngIf="selectedPerson">
-            <p>Has seleccionado: {{ selectedPerson.name }}</p>
+          <div class="mb-3">
+            <label for="developerSelect"  class="form-label">Selecciona un desarrollador</label>
+            <select id="developerSelect" class="form-select" formControlName="selectedPerson" [disabled]="isLoading">
+              <option value="" disabled selected>Selecciona un desarrollador</option>
+              <option *ngIf="isLoading" disabled>Cargando...</option>
+              <option *ngFor="let person of persons" [ngValue]="person">
+                {{ person.name }} ({{ person.age }} años)
+              </option>
+            </select>
+          </div>
+          <!-- El select con angular material no tomaba los temas de estilo como debia -->
+          <!-- <mat-form-field>
+            <mat-label>Selecciona un desarrollador</mat-label>
+            <mat-select [(value)]="selectedPerson">
+                <mat-option  *ngFor="let person of persons" [value]="person">
+                  {{ person.name }} ({{ person.age }} años)
+                </mat-option>
+            </mat-select>
+          </mat-form-field> -->
+          <div *ngIf="taskForm.get('selectedPerson')?.value">
+            <p>Has seleccionado: {{ taskForm.get('selectedPerson')?.value.name }} de {{ taskForm.get('selectedPerson')?.value.age }} años</p>
           </div>
         </ng-template>
         
-        <!-- Plantilla para nuevo desarrollador -->
         <ng-template #newDeveloperTemplate>
-          <label for="newName">Nombre:</label>
-          <input id="newName" [(ngModel)]="newDeveloper.name" placeholder="Escribe el nombre">
-          
-          <label for="newAge">Edad:</label>
-          <input id="newAge" type="number" [(ngModel)]="newDeveloper.age" placeholder="Escribe la edad">
+          <div class="dataNewDevContainer">
+            <div class="nameNewDev">
+              <div class="form-field">
+                <span>Nombre del desarrollador:</span>
+              </div>
+              <mat-form-field>
+                <mat-label>Escriba el nombre completo</mat-label>
+                <input matInput formControlName="newDeveloperName" required>
+                <mat-error *ngIf="taskForm.get('newDeveloperName')?.invalid && taskForm.get('newDeveloperName')?.touched">
+                  El nombre debe tener al menos 5 caracteres.
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div>
+              <div class="form-field">
+                <span>Edad:</span>
+              </div>
+              <mat-form-field>
+                <mat-label>Escriba la edad</mat-label>
+                <input type="number" matInput formControlName="newDeveloperAge" required>
+                <mat-error *ngIf="taskForm.get('newDeveloperAge')?.invalid && taskForm.get('newDeveloperAge')?.touched">
+                  La edad debe ser mayor de 18 años.
+                </mat-error>
+              </mat-form-field>
+            </div> 
+          </div> 
           
           <div *ngIf="newDeveloper.name && newDeveloper.age">
             <p>Nuevo desarrollador: {{ newDeveloper.name }} ({{ newDeveloper.age }} años)</p>
           </div>
         </ng-template>
      
-        <button mat-raised-button type="submit" [disabled]="taskForm.invalid">Guardar Formulario</button>
+        <div>
+          <button mat-raised-button type="submit"
+          [disabled]="!taskForm.valid || (isOldDeveloper && !taskForm.get('selectedPerson')?.value) || (selectedDeveloperType === 'new' && (taskForm.get('newDeveloperName')?.invalid || taskForm.get('newDeveloperAge')?.invalid))">
+            Añadir Persona
+          </button>
+        </div>
+
       </form>
   </div>
 </div>

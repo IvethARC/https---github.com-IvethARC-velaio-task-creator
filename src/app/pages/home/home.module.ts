@@ -39,7 +39,8 @@ import { FormsModule } from '@angular/forms';
     MatIconModule,
     MatCardModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    
   ],
   providers: [
     {
