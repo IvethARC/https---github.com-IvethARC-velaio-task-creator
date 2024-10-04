@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Person } from '../../../../core/models/person.model';
 import { TaskService } from 'src/app/core/services/task.service';
+import { List } from 'src/app/core/models/list.model';
 
 @Component({
   selector: 'app-new-task',
@@ -39,6 +40,9 @@ export class NewTaskComponent implements OnInit {
       this.persons = persons;
       this.isLoading = false;
       this.cdr.detectChanges();
+    }, error => {
+      console.error('Error loading persons:', error);
+      this.isLoading = false;
     });
   }
 
@@ -53,18 +57,17 @@ export class NewTaskComponent implements OnInit {
   }
 
   onSubmitFormData() {
-    if (this.taskForm.valid) {
-      const formData = {
+    if (this.taskForm.valid  || (this.isOldDeveloper && this.selectedPerson)) {
+      const formData: List = {
         taskName: this.taskForm.get('taskName')?.value,
         dueDate: this.taskForm.get('dueDate')?.value,
-        selectedPerson: this.taskForm.get('selectedPerson')?.value,
+        selectedPerson: this.isOldDeveloper ? this.selectedPerson : null,
         newDeveloper: this.isOldDeveloper ? null : {
           name: this.taskForm.get('newDeveloperName')?.value,
           age: this.taskForm.get('newDeveloperAge')?.value
         }
       };
-      console.log('Datos a enviar:', formData);
-      // Aquí puedes enviar `formData` al arreglo que utilizarás en otro componente
+      this.taskService.addTask(formData);
     }
   }
 }

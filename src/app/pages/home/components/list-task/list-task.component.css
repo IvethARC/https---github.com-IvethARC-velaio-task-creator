@@ -1,0 +1,24 @@
+.list-container {
+ width: 100%;
+ height: auto;
+ display: flex;
+ flex-direction: column;
+ justify-content: flex-start;
+ align-items: flex-start;
+ padding: 40px;
+ color: #ffffff;
+}
+.box-task {
+ display: flex;
+ justify-content: flex-start;
+ flex-direction: column;
+ align-items: center;
+ width: 330px;
+ height: auto;
+ border: red 5px solid;
+}
+.row-form {
+ display: flex;
+ margin-bottom: 16px;
+ gap: 8px;
+}

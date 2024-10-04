@@ -112,9 +112,8 @@
         </ng-template>
      
         <div>
-          <button mat-raised-button type="submit"
-          [disabled]="!taskForm.valid || (isOldDeveloper && !taskForm.get('selectedPerson')?.value) || (selectedDeveloperType === 'new' && (taskForm.get('newDeveloperName')?.invalid || taskForm.get('newDeveloperAge')?.invalid))">
-            Añadir Persona
+          <button mat-raised-button type="submit" [disabled]="taskForm.invalid && !(isOldDeveloper && taskForm.get('selectedPerson')?.value)">
+            Guardar Formulario
           </button>
         </div>
 
